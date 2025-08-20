@@ -72,6 +72,12 @@ class StockerSetting : PersistentStateComponent<StockerSettingState> {
             myState.cryptoList = value
         }
 
+    var wealthMap: MutableMap<String, StockerSettingState.Wealth>
+        get() = myState.wealthMap
+        set(value) {
+            myState.wealthMap = value
+        }
+
     val allStockListSize: Int
         get() = aShareList.size + hkStocksList.size + usStocksList.size + cryptoList.size
 

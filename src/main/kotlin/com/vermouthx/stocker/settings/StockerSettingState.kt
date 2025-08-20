@@ -12,4 +12,30 @@ class StockerSettingState {
     var hkStocksList: MutableList<String> = mutableListOf()
     var usStocksList: MutableList<String> = mutableListOf()
     var cryptoList: MutableList<String> = mutableListOf()
+
+    var wealthMap: MutableMap<String, Wealth> = mutableMapOf()
+
+
+    class Wealth {
+        var cost: Double = .0
+        var hold: Int = 0
+
+        fun have(): Boolean {
+            return cost > .0 && hold > 0
+        }
+
+        fun income(current: Double): Double {
+            return (current - cost) * hold
+        }
+
+        fun getCostStr(): String {
+            return cost.toString()
+        }
+
+        fun setCostStr(costStr: String) {
+            cost = costStr.toDouble()
+        }
+
+    }
+
 }

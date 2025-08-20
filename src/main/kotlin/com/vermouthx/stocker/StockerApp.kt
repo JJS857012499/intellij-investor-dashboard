@@ -89,7 +89,7 @@ class StockerApp {
 //                StockerQuoteHttpUtil.get(StockerMarketType.Crypto, quoteProvider, StockerMarketIndex.Crypto.codes)
             ).flatten()
             val publisher = messageBus.syncPublisher(STOCK_ALL_QUOTE_UPDATE_TOPIC)
-            publisher.syncQuotes(allStockQuotes, setting.allStockListSize)
+            publisher.syncQuotes(allStockQuotes, setting.allStockListSize, setting.wealthMap)
             publisher.syncIndices(allStockIndices)
         }
     }
@@ -110,7 +110,7 @@ class StockerApp {
                 val quotes = StockerQuoteHttpUtil.get(marketType, quoteProvider, stockCodeList)
                 val indices = StockerQuoteHttpUtil.get(marketType, quoteProvider, StockerMarketIndex.CN.codes)
                 val publisher = messageBus.syncPublisher(STOCK_CN_QUOTE_UPDATE_TOPIC)
-                publisher.syncQuotes(quotes, size)
+                publisher.syncQuotes(quotes, size, setting.wealthMap)
                 publisher.syncIndices(indices)
             }
 
@@ -118,7 +118,7 @@ class StockerApp {
                 val quotes = StockerQuoteHttpUtil.get(marketType, quoteProvider, stockCodeList)
                 val indices = StockerQuoteHttpUtil.get(marketType, quoteProvider, StockerMarketIndex.HK.codes)
                 val publisher = messageBus.syncPublisher(STOCK_HK_QUOTE_UPDATE_TOPIC)
-                publisher.syncQuotes(quotes, size)
+                publisher.syncQuotes(quotes, size, setting.wealthMap)
                 publisher.syncIndices(indices)
             }
 
@@ -126,7 +126,7 @@ class StockerApp {
                 val quotes = StockerQuoteHttpUtil.get(marketType, quoteProvider, stockCodeList)
                 val indices = StockerQuoteHttpUtil.get(marketType, quoteProvider, StockerMarketIndex.US.codes)
                 val publisher = messageBus.syncPublisher(STOCK_US_QUOTE_UPDATE_TOPIC)
-                publisher.syncQuotes(quotes, size)
+                publisher.syncQuotes(quotes, size, setting.wealthMap)
                 publisher.syncIndices(indices)
             }
 
@@ -134,7 +134,7 @@ class StockerApp {
                 val quotes = StockerQuoteHttpUtil.get(marketType, quoteProvider, stockCodeList)
                 val indices = StockerQuoteHttpUtil.get(marketType, quoteProvider, StockerMarketIndex.Crypto.codes)
                 val publisher = messageBus.syncPublisher(CRYPTO_QUOTE_UPDATE_TOPIC)
-                publisher.syncQuotes(quotes, size)
+                publisher.syncQuotes(quotes, size, setting.wealthMap)
                 publisher.syncIndices(indices)
             }
         }

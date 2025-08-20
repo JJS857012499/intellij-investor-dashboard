@@ -2,13 +2,11 @@ package com.vermouthx.stocker.views.windows
 
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
-import com.intellij.ui.dsl.builder.bindItem
-import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.dsl.builder.toMutableProperty
-import com.intellij.ui.dsl.builder.toNullableProperty
+import com.intellij.ui.dsl.builder.*
 import com.vermouthx.stocker.enums.StockerQuoteColorPattern
 import com.vermouthx.stocker.enums.StockerQuoteProvider
 import com.vermouthx.stocker.settings.StockerSetting
+import com.vermouthx.stocker.settings.StockerSettingState
 
 class StockerSettingWindow : BoundConfigurable("Stocker") {
 
@@ -16,6 +14,7 @@ class StockerSettingWindow : BoundConfigurable("Stocker") {
 
     private var colorPattern: StockerQuoteColorPattern = setting.quoteColorPattern
     private var quoteProviderTitle: String = setting.quoteProvider.title
+    private var wealthMap: MutableMap<String, StockerSettingState.Wealth> = setting.wealthMap
 
     override fun createPanel(): DialogPanel {
         return panel {
@@ -41,17 +40,35 @@ class StockerSettingWindow : BoundConfigurable("Stocker") {
                 }.bind(::colorPattern.toMutableProperty(), StockerQuoteColorPattern::class.java)
             }
 
+            group("Wealth") {
+                val codes = setting.aShareList
+                codes.forEach { code ->
+                    row(code) {
+                        var w = wealthMap.getOrDefault(code, StockerSettingState.Wealth());
+                        wealthMap.putIfAbsent(code, w)
+                        label("Cost:")
+                        textField().bindText(w::getCostStr, w::setCostStr)
+                        label("Hold:")
+                        textField().bindIntText(w::hold.toMutableProperty())
+                    }
+                }
+
+            }
+
             onApply {
                 setting.quoteProvider = setting.quoteProvider.fromTitle(quoteProviderTitle)
                 setting.quoteColorPattern = colorPattern
+                setting.wealthMap = wealthMap
             }
             onIsModified {
                 quoteProviderTitle != setting.quoteProvider.title
                 colorPattern != setting.quoteColorPattern
+                setting.wealthMap.values != wealthMap.values
             }
             onReset {
                 quoteProviderTitle = setting.quoteProvider.title
                 colorPattern = setting.quoteColorPattern
+                wealthMap = setting.wealthMap
             }
         }
     }

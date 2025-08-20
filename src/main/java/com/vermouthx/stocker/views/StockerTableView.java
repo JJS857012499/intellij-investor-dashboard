@@ -10,6 +10,7 @@ import com.vermouthx.stocker.components.StockerTableHeaderRender;
 import com.vermouthx.stocker.components.StockerTableModel;
 import com.vermouthx.stocker.entities.StockerQuote;
 import com.vermouthx.stocker.settings.StockerSetting;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -36,6 +37,9 @@ public class StockerTableView {
     private final JBLabel lbIndexValue = new JBLabel("", SwingConstants.CENTER);
     private final JBLabel lbIndexExtent = new JBLabel("", SwingConstants.CENTER);
     private final JBLabel lbIndexPercent = new JBLabel("", SwingConstants.CENTER);
+    private final JBLabel lbIndexCost = new JBLabel("", SwingConstants.CENTER);
+    private final JBLabel lbIndexHold = new JBLabel("", SwingConstants.CENTER);
+    private final JBLabel lbIndexIncome = new JBLabel("", SwingConstants.CENTER);
     private List<StockerQuote> indices = new ArrayList<>();
 
     public StockerTableView() {
@@ -106,12 +110,15 @@ public class StockerTableView {
     private void initPane() {
         tbPane = new JBScrollPane();
         tbPane.setBorder(BorderFactory.createEmptyBorder());
-        JPanel iPane = new JPanel(new GridLayout(1, 4));
+        JPanel iPane = new JPanel(new GridLayout(1, 7));
         iPane.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, JBColor.border()));
         iPane.add(cbIndex);
         iPane.add(lbIndexValue);
         iPane.add(lbIndexExtent);
         iPane.add(lbIndexPercent);
+        iPane.add(lbIndexCost);
+        iPane.add(lbIndexHold);
+        iPane.add(lbIndexIncome);
         cbIndex.addItemListener(i -> updateIndex());
         mPane = new JPanel(new BorderLayout());
         mPane.add(tbPane, BorderLayout.CENTER);
@@ -122,6 +129,9 @@ public class StockerTableView {
     private static final String nameColumn = "Name";
     private static final String currentColumn = "Current";
     private static final String percentColumn = "Change%";
+    private static final String costColumn = "Cost";
+    private static final String holdColumn = "Hold";
+    private static final String incomeColumn = "income";
 
     private void initTable() {
         tbModel = new StockerTableModel();
@@ -139,7 +149,7 @@ public class StockerTableView {
                 }
             }
         });
-        tbModel.setColumnIdentifiers(new String[]{codeColumn, nameColumn, currentColumn, percentColumn});
+        tbModel.setColumnIdentifiers(new String[]{codeColumn, nameColumn, currentColumn, percentColumn, costColumn, holdColumn, incomeColumn});
 
         tbBody.setShowVerticalLines(false);
         tbBody.setModel(tbModel);
@@ -168,6 +178,34 @@ public class StockerTableView {
                 String percent = value.toString();
                 Double v = Double.parseDouble(percent.substring(0, percent.indexOf("%")));
                 applyColorPatternToTable(v, this);
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        });
+        tbBody.getColumn(costColumn).setCellRenderer(new StockerDefaultTableCellRender() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                syncColorPatternSetting();
+                setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+                if (Objects.nonNull(value) && StringUtils.isNoneBlank(value.toString())) {
+                    String cost = value.toString();
+                    String current = table.getValueAt(row, table.getColumn(currentColumn).getModelIndex()).toString();
+                    Double v = Double.parseDouble(current) - Double.parseDouble(cost);
+                    applyColorPatternToTable(v, this);
+                }
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        });
+        tbBody.getColumn(holdColumn).setCellRenderer(new StockerDefaultTableCellRender());
+        tbBody.getColumn(incomeColumn).setCellRenderer(new StockerDefaultTableCellRender() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                syncColorPatternSetting();
+                setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+                if (Objects.nonNull(value) && StringUtils.isNoneBlank(value.toString())) {
+                    String income = value.toString();
+                    Double v = Double.parseDouble(income);
+                    applyColorPatternToTable(v, this);
+                }
                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             }
         });
