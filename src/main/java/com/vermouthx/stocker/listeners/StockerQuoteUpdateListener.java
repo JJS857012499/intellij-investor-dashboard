@@ -46,12 +46,12 @@ public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
                             tableModel.setValueAt(wealth.getHold(), rowIndex, 5);
                             tableModel.fireTableCellUpdated(rowIndex, 5);
                         }
-                        if (!tableModel.getValueAt(rowIndex, 6).equals(wealth.tIncome(quote.getCurrent()))) {
-                            tableModel.setValueAt(wealth.tIncome(quote.getCurrent()), rowIndex, 6);
+                        if (!tableModel.getValueAt(rowIndex, 6).equals(wealth.tIncome(quote.getChange()))) {
+                            tableModel.setValueAt(wealth.tIncome(quote.getChange()), rowIndex, 6);
                             tableModel.fireTableCellUpdated(rowIndex, 6);
                         }
-                        if (!tableModel.getValueAt(rowIndex, 7).equals(wealth.income(quote.getChange()))) {
-                            tableModel.setValueAt(wealth.income(quote.getChange()), rowIndex, 7);
+                        if (!tableModel.getValueAt(rowIndex, 7).equals(wealth.income(quote.getCurrent()))) {
+                            tableModel.setValueAt(wealth.income(quote.getCurrent()), rowIndex, 7);
                             tableModel.fireTableCellUpdated(rowIndex, 7);
                         }
 

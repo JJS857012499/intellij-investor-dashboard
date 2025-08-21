@@ -13,6 +13,10 @@ object StockerQuoteParser {
         return (this * 100.0).roundToInt() / 100.0
     }
 
+    private fun Double.threeDigits(): Double {
+        return (this * 1000.0).roundToInt() / 1000.0
+    }
+
     fun parseQuoteResponse(
         provider: StockerQuoteProvider, marketType: StockerMarketType, responseText: String
     ): List<StockerQuote> {
@@ -38,7 +42,7 @@ object StockerQuoteParser {
                     val current = textArray[4].toDouble()
                     val high = textArray[5].toDouble()
                     val low = textArray[6].toDouble()
-                    val change = (current - close)
+                    val change = (current - close).threeDigits()
                     val percentage = ((current - close) / close * 100).twoDigits()
                     val updateAt = textArray[31] + " " + textArray[32]
                     StockerQuote(
