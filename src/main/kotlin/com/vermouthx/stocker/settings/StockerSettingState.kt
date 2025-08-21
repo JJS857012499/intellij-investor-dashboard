@@ -2,6 +2,7 @@ package com.vermouthx.stocker.settings
 
 import com.vermouthx.stocker.enums.StockerQuoteColorPattern
 import com.vermouthx.stocker.enums.StockerQuoteProvider
+import java.math.BigDecimal
 
 class StockerSettingState {
     var version: String = ""
@@ -24,8 +25,14 @@ class StockerSettingState {
             return cost > .0 && hold > 0
         }
 
+        fun tIncome(change: Double): Double {
+            return BigDecimal(change.toString()).multiply(BigDecimal(hold)).toDouble()
+        }
+
         fun income(current: Double): Double {
-            return (current - cost) * hold
+            return (BigDecimal(current.toString()).subtract(BigDecimal(cost.toString())))
+                .multiply(BigDecimal(hold.toString()))
+                .toDouble()
         }
 
         fun getCostStr(): String {

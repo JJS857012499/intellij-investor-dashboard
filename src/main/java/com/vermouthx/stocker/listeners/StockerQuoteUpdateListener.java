@@ -50,12 +50,16 @@ public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
                             tableModel.setValueAt(wealth.income(quote.getCurrent()), rowIndex, 6);
                             tableModel.fireTableCellUpdated(rowIndex, 6);
                         }
+                        if (!tableModel.getValueAt(rowIndex, 7).equals(wealth.tIncome(quote.getChange()))) {
+                            tableModel.setValueAt(wealth.tIncome(quote.getChange()), rowIndex, 7);
+                            tableModel.fireTableCellUpdated(rowIndex, 7);
+                        }
 
                     }
                 } else {
                     if (quotes.size() == size) {
                         if (wealth.have()) {
-                            tableModel.addRow(new Object[]{quote.getCode(), quote.getName(), quote.getCurrent(), quote.getPercentage() + "%", wealth.getCost(), wealth.getHold(), wealth.income(quote.getCurrent())});
+                            tableModel.addRow(new Object[]{quote.getCode(), quote.getName(), quote.getCurrent(), quote.getPercentage() + "%", wealth.getCost(), wealth.getHold(), wealth.tIncome(quote.getChange()), wealth.income(quote.getCurrent())});
                         } else {
                             tableModel.addRow(new Object[]{quote.getCode(), quote.getName(), quote.getCurrent(), quote.getPercentage() + "%"});
                         }

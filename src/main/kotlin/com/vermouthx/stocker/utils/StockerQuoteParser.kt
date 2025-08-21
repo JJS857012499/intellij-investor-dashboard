@@ -38,7 +38,7 @@ object StockerQuoteParser {
                     val current = textArray[4].toDouble()
                     val high = textArray[5].toDouble()
                     val low = textArray[6].toDouble()
-                    val change = (current - close).twoDigits()
+                    val change = (current - close)
                     val percentage = ((current - close) / close * 100).twoDigits()
                     val updateAt = textArray[31] + " " + textArray[32]
                     StockerQuote(

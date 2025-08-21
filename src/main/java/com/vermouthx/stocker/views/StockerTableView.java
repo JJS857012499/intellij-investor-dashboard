@@ -131,7 +131,8 @@ public class StockerTableView {
     private static final String percentColumn = "Change%";
     private static final String costColumn = "Cost";
     private static final String holdColumn = "Hold";
-    private static final String incomeColumn = "income";
+    private static final String todayIncomeColumn = "TIncome";
+    private static final String incomeColumn = "Income";
 
     private void initTable() {
         tbModel = new StockerTableModel();
@@ -149,7 +150,7 @@ public class StockerTableView {
                 }
             }
         });
-        tbModel.setColumnIdentifiers(new String[]{codeColumn, nameColumn, currentColumn, percentColumn, costColumn, holdColumn, incomeColumn});
+        tbModel.setColumnIdentifiers(new String[]{codeColumn, nameColumn, currentColumn, percentColumn, costColumn, holdColumn, todayIncomeColumn, incomeColumn});
 
         tbBody.setShowVerticalLines(false);
         tbBody.setModel(tbModel);
@@ -196,6 +197,19 @@ public class StockerTableView {
             }
         });
         tbBody.getColumn(holdColumn).setCellRenderer(new StockerDefaultTableCellRender());
+        tbBody.getColumn(todayIncomeColumn).setCellRenderer(new StockerDefaultTableCellRender() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                syncColorPatternSetting();
+                setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+                if (Objects.nonNull(value) && StringUtils.isNoneBlank(value.toString())) {
+                    String income = value.toString();
+                    Double v = Double.parseDouble(income);
+                    applyColorPatternToTable(v, this);
+                }
+                return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            }
+        });
         tbBody.getColumn(incomeColumn).setCellRenderer(new StockerDefaultTableCellRender() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
