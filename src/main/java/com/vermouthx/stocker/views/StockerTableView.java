@@ -305,7 +305,8 @@ public class StockerTableView implements Disposable {
         tbBody.setIntercellSpacing(new Dimension(0, 1));
         tbBody.setShowGrid(true);
         tbBody.setShowVerticalLines(false);
-        tbBody.setShowHorizontalLines(true);
+        tbBody.setShowHorizontalLines(false);
+        tbBody.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         tbBody.setGridColor(JBColor.namedColor("Table.gridColor", JBColor.border()));
         tbBody.setFillsViewportHeight(true);
         tbBody.getColumnModel().setColumnMargin(0);
