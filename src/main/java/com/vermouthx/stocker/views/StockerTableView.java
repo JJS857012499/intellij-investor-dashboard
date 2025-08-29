@@ -152,6 +152,8 @@ public class StockerTableView {
         });
         tbModel.setColumnIdentifiers(new String[]{codeColumn, nameColumn, currentColumn, percentColumn, costColumn, holdColumn, todayIncomeColumn, incomeColumn});
 
+        tbBody.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        tbBody.setShowHorizontalLines(false);
         tbBody.setShowVerticalLines(false);
         tbBody.setModel(tbModel);
 
