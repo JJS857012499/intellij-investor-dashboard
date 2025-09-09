@@ -26,29 +26,29 @@ class StockerApp {
             scheduledExecutorService = Executors.newScheduledThreadPool(4)
             scheduleInitialDelay = 0
         }
-        scheduledExecutorService.scheduleAtFixedRate(
+        scheduledExecutorService.scheduleWithFixedDelay(
             createQuoteUpdateThread(StockerMarketType.AShare, setting.aShareList),
             scheduleInitialDelay,
             schedulePeriod,
             TimeUnit.SECONDS
         )
-        scheduledExecutorService.scheduleAtFixedRate(
+        scheduledExecutorService.scheduleWithFixedDelay(
             createQuoteUpdateThread(StockerMarketType.HKStocks, setting.hkStocksList),
             scheduleInitialDelay,
             schedulePeriod,
             TimeUnit.SECONDS
         )
-        scheduledExecutorService.scheduleAtFixedRate(
+        scheduledExecutorService.scheduleWithFixedDelay(
             createQuoteUpdateThread(StockerMarketType.USStocks, setting.usStocksList),
             scheduleInitialDelay,
             schedulePeriod,
             TimeUnit.SECONDS
         )
-//        scheduledExecutorService.scheduleAtFixedRate(
+//        scheduledExecutorService.scheduleWithFixedDelay(
 //            createQuoteUpdateThread(StockerMarketType.Crypto, setting.cryptoList),
 //            scheduleInitialDelay, schedulePeriod, TimeUnit.SECONDS
 //        )
-        scheduledExecutorService.scheduleAtFixedRate(
+        scheduledExecutorService.scheduleWithFixedDelay(
             createAllQuoteUpdateThread(), scheduleInitialDelay, schedulePeriod, TimeUnit.SECONDS
         )
     }
