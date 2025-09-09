@@ -19,6 +19,8 @@ class StockerSettingState {
 
     class Wealth {
         var cost: Double = .0
+        var lPrice: Double = .0
+        var hPrice: Double = .0
         var hold: Int = 0
 
         fun have(): Boolean {
@@ -35,12 +37,34 @@ class StockerSettingState {
                 .toDouble()
         }
 
+        fun breakPrice(current: Double): Boolean {
+            return (lPrice > .0 && lPrice > current)
+                    || (hPrice > .0 && hPrice < current)
+        }
+
         fun getCostStr(): String {
             return cost.toString()
         }
 
         fun setCostStr(costStr: String) {
             cost = costStr.toDouble()
+        }
+
+
+        fun getLPriceStr(): String {
+            return lPrice.toString()
+        }
+
+        fun setLPriceStr(lPriceStr: String) {
+            lPrice = lPriceStr.toDouble()
+        }
+
+        fun getHPriceStr(): String {
+            return hPrice.toString()
+        }
+
+        fun setHPriceStr(hPriceStr: String) {
+            hPrice = hPriceStr.toDouble()
         }
 
     }

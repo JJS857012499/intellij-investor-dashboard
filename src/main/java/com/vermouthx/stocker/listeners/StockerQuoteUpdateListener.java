@@ -1,5 +1,7 @@
 package com.vermouthx.stocker.listeners;
 
+import com.intellij.notification.NotificationGroupManager;
+import com.intellij.notification.NotificationType;
 import com.vermouthx.stocker.entities.StockerQuote;
 import com.vermouthx.stocker.settings.StockerSettingState;
 import com.vermouthx.stocker.utils.StockerTableModelUtil;
@@ -11,6 +13,8 @@ import java.util.Map;
 
 public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
     private final StockerTableView myTableView;
+
+    private final String NOTIFICATION_GROUP_ID = "Stocker";
 
     public StockerQuoteUpdateListener(StockerTableView myTableView) {
         this.myTableView = myTableView;
@@ -31,6 +35,15 @@ public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
                     if (!tableModel.getValueAt(rowIndex, 2).equals(quote.getCurrent())) {
                         tableModel.setValueAt(quote.getCurrent(), rowIndex, 2);
                         tableModel.fireTableCellUpdated(rowIndex, 2);
+
+                        // 破位价
+                        if (wealth.breakPrice(quote.getCurrent())) {
+                            var content = quote.getName() + "破价了，当前价格： " + quote.getCurrent();
+                            var notification = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
+                                    .createNotification("价格破位通知", content, NotificationType.WARNING);
+                            notification.notify(null);
+                        }
+
                     }
                     if (!tableModel.getValueAt(rowIndex, 3).equals(quote.getPercentage())) {
                         tableModel.setValueAt(quote.getPercentage() + "%", rowIndex, 3);

@@ -50,6 +50,11 @@ class StockerSettingWindow : BoundConfigurable("Stocker") {
                         textField().bindText(w::getCostStr, w::setCostStr)
                         label("Hold:")
                         textField().bindIntText(w::hold.toMutableProperty())
+
+                        label("LPrice:")
+                        textField().bindText(w::getLPriceStr, w::setLPriceStr)
+                        label("HPrice:")
+                        textField().bindText(w::getHPriceStr, w::setHPriceStr)
                     }
                 }
 
