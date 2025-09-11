@@ -19,6 +19,7 @@ import com.vermouthx.stocker.listeners.StockerQuoteReloadNotifier.*
 import com.vermouthx.stocker.listeners.StockerQuoteUpdateListener
 import com.vermouthx.stocker.listeners.StockerQuoteUpdateNotifier.*
 import com.vermouthx.stocker.settings.StockerSetting
+import com.vermouthx.stocker.views.dialogs.StockerKImageDialog
 
 class StockerToolWindow : ToolWindowFactory {
 
@@ -33,6 +34,41 @@ class StockerToolWindow : ToolWindowFactory {
             val tbBody = window.tableView.tableBody
             val tbModel = window.tableView.tableModel
             val tbPopupMenu = JBPopupMenu()
+            val tbPopupMinKMenuItem = JBMenuItem("K", AllIcons.General.Layout)
+            tbPopupMinKMenuItem.addActionListener {
+                if (tbBody.selectedRowCount == 0) {
+                    Messages.showErrorDialog(
+                        project, "You have not selected any stock symbol.", "Require Symbol Selection"
+                    )
+                    return@addActionListener
+                }
+                val setting = StockerSetting.instance
+                for (selectedRow in tbBody.selectedRows) {
+                    val code = tbModel.getValueAt(selectedRow, 0).toString()
+                    val market = setting.marketOf(code)
+                    if (market != null) {
+                        when (market) {
+                            StockerMarketType.AShare -> {
+                                StockerKImageDialog(project, market, code).show()
+                            }
+
+                            StockerMarketType.HKStocks -> {
+
+                            }
+
+                            StockerMarketType.USStocks -> {
+
+                            }
+
+                            StockerMarketType.Crypto -> {
+
+                            }
+                        }
+                    }
+                }
+            }
+            tbPopupMenu.add(tbPopupMinKMenuItem)
+
             val tbPopupDeleteMenuItem = JBMenuItem("Delete", AllIcons.General.Remove)
             tbPopupDeleteMenuItem.addActionListener {
                 if (tbBody.selectedRowCount == 0) {
