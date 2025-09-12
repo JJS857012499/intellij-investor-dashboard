@@ -63,6 +63,7 @@ class StockerKImageDialog(val project: Project?, val market: StockerMarketType, 
             val url = URL(imageUrl)
             val image = ImageIO.read(url)
             jLabel.setIcon(ImageIcon(image))
+            jLabel.setText("");
         } catch (e: Exception) {
             println("网络图像加载失败：" + e.message)
             jLabel.setText("无法加载图像，请检查网络连接。")
