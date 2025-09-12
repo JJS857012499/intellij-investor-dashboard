@@ -38,9 +38,9 @@ public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
 
                         // 破位价
                         if (wealth.breakPrice(quote.getCurrent())) {
-                            var content = quote.getName() + "破价了，当前价格： " + quote.getCurrent();
+                            var content = quote.getName() + ", current： " + quote.getCurrent();
                             var notification = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
-                                    .createNotification("价格破位通知", content, NotificationType.WARNING);
+                                    .createNotification("Break price", content, NotificationType.WARNING);
                             notification.notify(null);
                         }
 
