@@ -9,6 +9,7 @@ import com.intellij.ui.dsl.builder.AlignY
 import com.intellij.ui.dsl.builder.panel
 import com.vermouthx.stocker.enums.StockerMarketType
 import java.awt.BorderLayout
+import java.awt.Color
 import java.net.URL
 import javax.imageio.ImageIO
 import javax.swing.*
@@ -63,6 +64,8 @@ class StockerKImageDialog(val project: Project?, val market: StockerMarketType, 
             val url = URL(imageUrl)
             val image = ImageIO.read(url)
             jLabel.setIcon(ImageIcon(image))
+            jLabel.setOpaque(true)
+            jLabel.setBackground(Color.LIGHT_GRAY)
             jLabel.setText("");
         } catch (e: Exception) {
             println("网络图像加载失败：" + e.message)
