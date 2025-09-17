@@ -3,10 +3,12 @@ package com.vermouthx.stocker.views.windows
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.dsl.builder.*
+import com.vermouthx.stocker.enums.StockerMarketType
 import com.vermouthx.stocker.enums.StockerQuoteColorPattern
 import com.vermouthx.stocker.enums.StockerQuoteProvider
 import com.vermouthx.stocker.settings.StockerSetting
 import com.vermouthx.stocker.settings.StockerSettingState
+import com.vermouthx.stocker.utils.StockerQuoteHttpUtil
 
 class StockerSettingWindow : BoundConfigurable("Stocker") {
 
@@ -41,20 +43,22 @@ class StockerSettingWindow : BoundConfigurable("Stocker") {
             }
 
             group("Wealth") {
-                val codes = setting.aShareList
-                codes.forEach { code ->
-                    row(code) {
-                        var w = wealthMap.getOrDefault(code, StockerSettingState.Wealth());
-                        wealthMap.putIfAbsent(code, w)
+
+                val aShareStockQuotes = StockerQuoteHttpUtil.get(StockerMarketType.AShare, setting.quoteProvider, setting.aShareList)
+
+                aShareStockQuotes.forEach { stockQute ->
+                    row(stockQute.name) {
+                        val w = wealthMap.getOrDefault(stockQute.code, StockerSettingState.Wealth());
+                        wealthMap.putIfAbsent(stockQute.code, w)
                         label("Cost:")
-                        textField().bindText(w::getCostStr, w::setCostStr)
+                        textField().bindText(w::getCostStr, w::setCostStr).columns(8)
                         label("Hold:")
-                        textField().bindIntText(w::hold.toMutableProperty())
+                        textField().bindIntText(w::hold.toMutableProperty()).columns(8)
 
                         label("LPrice:")
-                        textField().bindText(w::getLPriceStr, w::setLPriceStr)
+                        textField().bindText(w::getLPriceStr, w::setLPriceStr).columns(8)
                         label("HPrice:")
-                        textField().bindText(w::getHPriceStr, w::setHPriceStr)
+                        textField().bindText(w::getHPriceStr, w::setHPriceStr).columns(8)
                     }
                 }
 
