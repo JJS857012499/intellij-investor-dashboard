@@ -44,24 +44,26 @@ class StockerSettingWindow : BoundConfigurable("Stocker") {
 
             group("Wealth") {
 
-                val aShareStockQuotes = StockerQuoteHttpUtil.get(StockerMarketType.AShare, setting.quoteProvider, setting.aShareList)
+                val aShareStockQuotes =
+                    StockerQuoteHttpUtil.get(StockerMarketType.AShare, setting.quoteProvider, setting.aShareList)
+
+                row("Name        ") {
+                    label("Cost            ")
+                    label("Hold            ")
+                    label("LPrice          ")
+                    label("HPrice          ")
+                }
 
                 aShareStockQuotes.forEach { stockQute ->
                     row(stockQute.name) {
                         val w = wealthMap.getOrDefault(stockQute.code, StockerSettingState.Wealth());
                         wealthMap.putIfAbsent(stockQute.code, w)
-                        label("Cost:")
                         textField().bindText(w::getCostStr, w::setCostStr).columns(8)
-                        label("Hold:")
                         textField().bindIntText(w::hold.toMutableProperty()).columns(8)
-
-                        label("LPrice:")
                         textField().bindText(w::getLPriceStr, w::setLPriceStr).columns(8)
-                        label("HPrice:")
                         textField().bindText(w::getHPriceStr, w::setHPriceStr).columns(8)
                     }
                 }
-
             }
 
             onApply {
