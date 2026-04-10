@@ -1,5 +1,7 @@
 package com.vermouthx.stocker.listeners;
 
+import com.intellij.notification.NotificationGroupManager;
+import com.intellij.notification.NotificationType;
 import com.vermouthx.stocker.entities.StockerQuote;
 import com.vermouthx.stocker.settings.StockerSetting;
 import com.vermouthx.stocker.utils.StockerTableModelUtil;
@@ -7,6 +9,8 @@ import com.vermouthx.stocker.views.StockerTableView;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+
+import static com.intellij.configurationStore.StorageUtilKt.NOTIFICATION_GROUP_ID;
 
 public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
     private final StockerTableView myTableView;
@@ -51,6 +55,19 @@ public class StockerQuoteUpdateListener implements StockerQuoteUpdateNotifier {
                     if (!tableModel.getValueAt(rowIndex, 2).equals(quote.getCurrent())) {
                         tableModel.setValueAt(quote.getCurrent(), rowIndex, 2);
                         tableModel.fireTableCellUpdated(rowIndex, 2);
+
+                        // break price
+                        Double breakLowPrice = setting.getBreakLowPrice(quote.getCode());
+                        Double breakHighPrice = setting.getBreakHighPrice(quote.getCode());
+
+                        if ((breakLowPrice != null && breakLowPrice > quote.getCurrent())
+                                || (breakHighPrice != null && breakHighPrice < quote.getCurrent())) {
+                            var content = displayName + ", current： " + quote.getCurrent();
+                            var notification = NotificationGroupManager.getInstance().getNotificationGroup(NOTIFICATION_GROUP_ID)
+                                    .createNotification("Break price", content, NotificationType.WARNING);
+                            notification.notify(null);
+                        }
+
                     }
                     // Column 3: Opening
                     if (!tableModel.getValueAt(rowIndex, 3).equals(quote.getOpening())) {

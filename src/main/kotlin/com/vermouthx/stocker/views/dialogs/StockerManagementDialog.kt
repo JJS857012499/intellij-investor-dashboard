@@ -170,7 +170,9 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
             val customName = setting.getCustomName(symbol.code)
             val costPrice = setting.getCostPrice(symbol.code)
             val holdings = setting.getHoldings(symbol.code)
-            
+            val breakLowPrice = setting.getBreakLowPrice(symbol.code)
+            val breakHighPrice = setting.getBreakHighPrice(symbol.code)
+
             panel {
                 row {
                     label(symbol.code)
@@ -212,6 +214,18 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                         minimumSize = java.awt.Dimension(80, 0)
                         preferredSize = java.awt.Dimension(80, preferredSize.height)
                     }
+                    label(
+                        breakLowPrice?.toString() ?: "-"
+                    ).applyToComponent {
+                        minimumSize = java.awt.Dimension(80, 0)
+                        preferredSize = java.awt.Dimension(80, preferredSize.height)
+                    }
+                    label(
+                        breakHighPrice?.toString() ?: "-"
+                    ).applyToComponent {
+                        minimumSize = java.awt.Dimension(80, 0)
+                        preferredSize = java.awt.Dimension(80, preferredSize.height)
+                    }
                 }
             }.withBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8))
         }
@@ -244,6 +258,16 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                         minimumSize = java.awt.Dimension(80, 0)
                         preferredSize = java.awt.Dimension(80, preferredSize.height)
                     }
+                label("Low").bold()
+                    .applyToComponent {
+                        minimumSize = java.awt.Dimension(80, 0)
+                        preferredSize = java.awt.Dimension(80, preferredSize.height)
+                    }
+                label("High").bold()
+                    .applyToComponent {
+                        minimumSize = java.awt.Dimension(80, 0)
+                        preferredSize = java.awt.Dimension(80, preferredSize.height)
+                    }
             }
         }.withBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0, 0, 1, 0, javax.swing.UIManager.getColor("Separator.foreground")),
@@ -259,6 +283,8 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                     val currentCustomName = setting.getCustomName(selectedQuote.code)
                     val currentCostPrice = setting.getCostPrice(selectedQuote.code)
                     val currentHoldings = setting.getHoldings(selectedQuote.code)
+                    val currentBreakLowPrice = setting.getBreakLowPrice(selectedQuote.code)
+                    val currentBreakHighPrice = setting.getBreakHighPrice(selectedQuote.code)
 
                     val nameField = javax.swing.JTextField(currentCustomName ?: "", 20)
                     val costPriceField = javax.swing.JTextField(
@@ -266,6 +292,12 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                     )
                     val holdingsField = javax.swing.JTextField(
                         currentHoldings?.toString() ?: "", 20
+                    )
+                    val breakLowPriceField = javax.swing.JTextField(
+                        currentBreakLowPrice?.let { String.format("%.3f", it) } ?: "", 20
+                    )
+                    val breakHighPriceField = javax.swing.JTextField(
+                        currentBreakHighPrice?.let { String.format("%.3f", it) } ?: "", 20
                     )
 
                     val editPanel = panel {
@@ -283,6 +315,16 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                             label("Holdings:")
                                 .widthGroup("editLabels")
                             cell(holdingsField)
+                        }.layout(RowLayout.LABEL_ALIGNED)
+                        row {
+                            label("Break Low price:")
+                                .widthGroup("editLabels")
+                            cell(breakLowPriceField)
+                        }.layout(RowLayout.LABEL_ALIGNED)
+                        row {
+                            label("Break High price:")
+                                .widthGroup("editLabels")
+                            cell(breakHighPriceField)
                         }.layout(RowLayout.LABEL_ALIGNED)
                     }
 
@@ -327,6 +369,33 @@ class StockerManagementDialog(val project: Project?) : DialogWrapper(project) {
                             }
                         } else if (currentHoldings != null) {
                             setting.removeHoldings(selectedQuote.code)
+                        }
+
+                        // Handle break low price
+                        val breakLowPriceText = breakLowPriceField.text.trim()
+                        if (breakLowPriceText.isNotBlank()) {
+                            try {
+                                val breakLowPrice = breakLowPriceText.toDouble()
+                                setting.setBreakLowPrice(selectedQuote.code, breakLowPrice)
+                            } catch (e: NumberFormatException) {
+                                // Ignore invalid input
+                            }
+                        } else if (currentBreakLowPrice != null) {
+                            setting.removeBreakLowPrice(selectedQuote.code)
+                        }
+
+
+                        // Handle break high price
+                        val breakHighPriceText = breakHighPriceField.text.trim()
+                        if (breakHighPriceText.isNotBlank()) {
+                            try {
+                                val breakHighPrice = breakHighPriceText.toDouble()
+                                setting.setBreakHighPrice(selectedQuote.code, breakHighPrice)
+                            } catch (e: NumberFormatException) {
+                                // Ignore invalid input
+                            }
+                        } else if (currentBreakHighPrice != null) {
+                            setting.removeBreakHighPrice(selectedQuote.code)
                         }
 
                         StockerTableView.refreshAllFinancialColumns()

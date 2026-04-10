@@ -131,6 +131,18 @@ class StockerSetting : PersistentStateComponent<StockerSettingState> {
             myState.stockHoldings = value
         }
 
+    var stockBreakLowPrices: MutableMap<String, Double>
+        get() = myState.stockBreakLowPrices
+        set(value) {
+            myState.stockBreakLowPrices = value
+        }
+
+    var stockBreakHighPrices: MutableMap<String, Double>
+        get() = myState.stockBreakHighPrices
+        set(value) {
+            myState.stockBreakHighPrices = value
+        }
+
     val allStockListSize: Int
         get() = aShareList.size + hkStocksList.size + usStocksList.size + cryptoList.size
 
@@ -175,6 +187,36 @@ class StockerSetting : PersistentStateComponent<StockerSettingState> {
     fun removeHoldings(code: String) {
         stockHoldings.remove(code)
         log.info("Holdings removed for $code")
+    }
+
+    fun setBreakLowPrice(code: String, breakLowPrice: Double) {
+        val rounded = Math.round(breakLowPrice * 1000.0) / 1000.0
+        stockBreakLowPrices[code] = rounded
+        log.info("Break low price set for $code: $rounded")
+    }
+
+    fun getBreakLowPrice(code: String): Double? {
+        return stockBreakLowPrices[code]
+    }
+
+    fun removeBreakLowPrice(code: String) {
+        stockBreakLowPrices.remove(code)
+        log.info("Break low price removed for $code")
+    }
+
+    fun setBreakHighPrice(code: String, breakHighPrice: Double) {
+        val rounded = Math.round(breakHighPrice * 1000.0) / 1000.0
+        stockBreakHighPrices[code] = rounded
+        log.info("Break high price set for $code: $rounded")
+    }
+
+    fun getBreakHighPrice(code: String): Double? {
+        return stockBreakHighPrices[code]
+    }
+
+    fun removeBreakHighPrice(code: String) {
+        stockBreakHighPrices.remove(code)
+        log.info("Break high price removed for $code")
     }
 
     fun getDisplayName(code: String, originalName: String): String {
