@@ -3,8 +3,8 @@ package com.vermouthx.stocker.views.windows
 import com.intellij.openapi.options.BoundConfigurable
 import com.intellij.openapi.ui.DialogPanel
 import com.intellij.ui.JBColor
-import com.intellij.ui.SimpleListCellRenderer
 import com.intellij.ui.dsl.builder.*
+import com.intellij.ui.dsl.listCellRenderer.textListCellRenderer
 import com.vermouthx.stocker.StockerAppManager
 import com.vermouthx.stocker.StockerBundle
 import com.vermouthx.stocker.enums.StockerQuoteColorPattern
@@ -36,6 +36,7 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
     private var showCostPrice: Boolean = setting.isTableColumnVisible(StockerTableColumn.COST_PRICE)
     private var showHoldings: Boolean = setting.isTableColumnVisible(StockerTableColumn.HOLDINGS)
     private var showNetProfit: Boolean = setting.isTableColumnVisible(StockerTableColumn.NET_PROFIT)
+    private var showDailyProfit: Boolean = setting.isTableColumnVisible(StockerTableColumn.DAILY_PROFIT)
 
     private var symbolCheckBox: JCheckBox? = null
     private var nameCheckBox: JCheckBox? = null
@@ -49,6 +50,7 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
     private var costPriceCheckBox: JCheckBox? = null
     private var holdingsCheckBox: JCheckBox? = null
     private var netProfitCheckBox: JCheckBox? = null
+    private var dailyProfitCheckBox: JCheckBox? = null
     private var columnWarningLabel: JLabel? = null
 
     companion object {
@@ -63,8 +65,8 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
     }
 
     override fun createPanel(): DialogPanel {
-        val providerRenderer = SimpleListCellRenderer.create<StockerQuoteProvider>("") { it.title }
-        val languageRenderer = SimpleListCellRenderer.create<String>("") { languageDisplayName(it) }
+        val providerRenderer = textListCellRenderer { value: StockerQuoteProvider? -> value?.title ?: "" }
+        val languageRenderer = textListCellRenderer { value: String? -> languageDisplayName(value ?: "") }
 
         return panel {
             group(StockerBundle.message("settings.group.general")) {
@@ -238,6 +240,14 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
                             .component
                     }
                     row {
+                        dailyProfitCheckBox = checkBox(StockerTableColumn.DAILY_PROFIT.title)
+                            .bindSelected(::showDailyProfit.toMutableProperty())
+                            .applyToComponent {
+                                addItemListener { handleColumnToggle(this) }
+                            }
+                            .component
+                    }
+                    row {
                         columnWarningLabel = label(StockerBundle.message("settings.table.columns.warning"))
                             .applyToComponent {
                                 foreground = JBColor.RED
@@ -300,6 +310,7 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
                 showCostPrice = setting.isTableColumnVisible(StockerTableColumn.COST_PRICE)
                 showHoldings = setting.isTableColumnVisible(StockerTableColumn.HOLDINGS)
                 showNetProfit = setting.isTableColumnVisible(StockerTableColumn.NET_PROFIT)
+                showDailyProfit = setting.isTableColumnVisible(StockerTableColumn.DAILY_PROFIT)
                 columnWarningLabel?.isVisible = false
             }
         }
@@ -319,6 +330,7 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
         if (showCostPrice) visibleColumns.add(StockerTableColumn.COST_PRICE.name)
         if (showHoldings) visibleColumns.add(StockerTableColumn.HOLDINGS.name)
         if (showNetProfit) visibleColumns.add(StockerTableColumn.NET_PROFIT.name)
+        if (showDailyProfit) visibleColumns.add(StockerTableColumn.DAILY_PROFIT.name)
         return visibleColumns
     }
 
@@ -335,7 +347,8 @@ class StockerSettingWindow : BoundConfigurable(StockerBundle.message("plugin.nam
             changePercentCheckBox,
             costPriceCheckBox,
             holdingsCheckBox,
-            netProfitCheckBox
+            netProfitCheckBox,
+            dailyProfitCheckBox
         )
         val selectedCount = allCheckboxes.count { it.isSelected }
 
