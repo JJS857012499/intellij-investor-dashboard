@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.21.2
+
+### 🐛 Bug Fixes / 错误修复
+
+- Fixed Manage Favorites wiping a watchlist when OK was clicked before its quotes finished loading / 修复“管理自选”在行情加载完成前点击确定会清空自选列表的问题
+- Fixed a single unknown or delisted symbol freezing or blanking its whole market tab and the ALL tab; the remaining symbols now keep updating / 修复单个无效或已退市代码导致所在市场标签页及“全部”标签页停止刷新或显示为空的问题，其余代码现可正常更新
+- Fixed duplicated refreshes and interference with several projects open: closing one project no longer stops quotes in the others, and Refresh / Stop now apply to every open Stocker window / 修复同时打开多个项目时重复刷新及相互干扰的问题：关闭一个项目不再导致其他项目停止更新，“刷新”与“停止”现作用于所有已打开的 Stocker 窗口
+- Fixed adding favorites, or saving changes in Manage Favorites, having no effect before the Stocker tool window had been opened / 修复在未打开 Stocker 工具窗口时添加自选或在“管理自选”中保存修改无效的问题
+- Fixed rows occasionally being duplicated when sorting during a refresh / 修复刷新过程中排序偶尔导致行重复的问题
+- Add Favorites no longer suggests USDT crypto pairs, which the Sina provider no longer quotes / “添加自选”不再推荐新浪已不再提供行情的 USDT 加密货币交易对
+
 ## 1.21.1
 
 ### 🐛 Bug Fixes / 错误修复

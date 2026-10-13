@@ -49,15 +49,16 @@ object StockerNotification {
                 <ul style="margin: 0; padding-left: 18px;">
                     <li style="${Styles.LIST_ITEM}">🐛 <strong>错误修复</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>修复中文界面下“添加自选”按钮执行错误操作的问题</li>
-                            <li>修复“管理自选”点击确定时静默删除行情获取失败代码的问题</li>
-                            <li>修复“管理自选”选中行未高亮，以及编辑表单忽略无效输入的问题</li>
+                            <li>修复“管理自选”在行情加载完成前点击确定会清空自选列表的问题</li>
+                            <li>修复单个无效或已退市代码导致整个市场标签页停止刷新或显示为空的问题</li>
+                            <li>修复同时打开多个项目时重复刷新、关闭一个项目导致其他项目停止更新的问题</li>
+                            <li>修复未打开工具窗口时添加自选无效，以及刷新时排序偶尔出现重复行的问题</li>
                         </ul>
                     </li>
-                    <li style="${Styles.LIST_ITEM}">🎨 <strong>界面改进</strong>
+                    <li style="${Styles.LIST_ITEM}">💡 <strong>行为变化</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>统一价格小数位，并为涨跌相关数值显示正负号</li>
-                            <li>为空表格与对话框加入操作提示，菜单与排序指示器改用 IDE 标准样式</li>
+                            <li>“刷新”与“停止”现作用于所有已打开的 Stocker 窗口</li>
+                            <li>“添加自选”不再推荐新浪已不提供行情的 USDT 加密货币交易对</li>
                         </ul>
                     </li>
                 </ul>
@@ -73,15 +74,16 @@ object StockerNotification {
                 <ul style="margin: 0; padding-left: 18px;">
                     <li style="${Styles.LIST_ITEM}">🐛 <strong>Bug Fixes</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>Fixed the Add Favorites button running the wrong operation in the Chinese UI</li>
-                            <li>Fixed Manage Favorites silently dropping symbols whose quotes could not be fetched when clicking OK</li>
-                            <li>Fixed the unhighlighted selected row and the edit form ignoring invalid input in Manage Favorites</li>
+                            <li>Fixed Manage Favorites wiping a watchlist when OK was clicked before its quotes finished loading</li>
+                            <li>Fixed a single unknown or delisted symbol freezing or blanking its whole market tab</li>
+                            <li>Fixed duplicated refreshes with several projects open, and closing one project stopping quotes in the others</li>
+                            <li>Fixed adding favorites before the tool window was opened, and rows occasionally duplicating when sorting during a refresh</li>
                         </ul>
                     </li>
-                    <li style="${Styles.LIST_ITEM}">🎨 <strong>UI Improvements</strong>
+                    <li style="${Styles.LIST_ITEM}">💡 <strong>Behavior Changes</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>Consistent price decimals and explicit signs on change and profit values</li>
-                            <li>Helpful empty states, plus standard IDE styling for menus and sort indicators</li>
+                            <li>Refresh and Stop now apply to every open Stocker window</li>
+                            <li>Add Favorites no longer suggests USDT crypto pairs, which Sina no longer quotes</li>
                         </ul>
                     </li>
                 </ul>
