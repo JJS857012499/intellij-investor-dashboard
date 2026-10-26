@@ -45,32 +45,50 @@ object StockerNotification {
         return if (isChinese()) """
             <div style="${Styles.CONTAINER}">
                 <p style="${Styles.PARAGRAPH}">🎉 <strong>欢迎使用 Stocker v${v}！本次更新内容：</strong></p>
-                <h4 style="${Styles.HEADING}">🐛 v${v} 错误修复</h4>
+                <h4 style="${Styles.HEADING}">🐛 v${v} 修复与改进</h4>
                 <ul style="margin: 0; padding-left: 18px;">
                     <li style="${Styles.LIST_ITEM}">🐛 <strong>错误修复</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>修复 Windows 下表格右键删除菜单的竞态问题，在新版 UI 中删除自选股更稳定</li>
+                            <li>修复“管理自选”在行情加载完成前点击确定会清空自选列表的问题</li>
+                            <li>修复单个无效或已退市代码导致整个市场标签页停止刷新或显示为空的问题</li>
+                            <li>修复同时打开多个项目时重复刷新、关闭一个项目导致其他项目停止更新的问题</li>
+                            <li>修复未打开工具窗口时添加自选无效，以及刷新时排序偶尔出现重复行的问题</li>
+                        </ul>
+                    </li>
+                    <li style="${Styles.LIST_ITEM}">💡 <strong>行为变化</strong>
+                        <ul style="${Styles.SUB_LIST}">
+                            <li>“刷新”与“停止”现作用于所有已打开的 Stocker 窗口</li>
+                            <li>“添加自选”不再推荐新浪已不提供行情的 USDT 加密货币交易对</li>
                         </ul>
                     </li>
                 </ul>
                 <div style="${Styles.INFO_BOX}">
-                    <p style="margin: 0; font-size: 12px;">💡 <strong>说明：</strong>如果您之前在 Windows 新版 UI 中遇到右键删除偶发失效，请升级到此版本。</p>
+                    <p style="margin: 0; font-size: 12px;">💡 <strong>说明：</strong>本版本要求 IntelliJ IDEA 2025.3 或更高版本。</p>
                 </div>
                 <p style="${Styles.SMALL_TEXT}">💖 如果您觉得这个插件有帮助，请考虑点击下方的 <strong>Donate</strong> 按钮以支持开发。谢谢！📈</p>
             </div>
         """.trimIndent() else """
             <div style="${Styles.CONTAINER}">
                 <p style="${Styles.PARAGRAPH}">🎉 <strong>Welcome to Stocker v${v}! Here's what's new in this release:</strong></p>
-                <h4 style="${Styles.HEADING}">🐛 Bug Fixes in v${v}</h4>
+                <h4 style="${Styles.HEADING}">🐛 Fixes &amp; improvements in v${v}</h4>
                 <ul style="margin: 0; padding-left: 18px;">
                     <li style="${Styles.LIST_ITEM}">🐛 <strong>Bug Fixes</strong>
                         <ul style="${Styles.SUB_LIST}">
-                            <li>Fixed the Windows right-click delete race in the table popup menu so favorites can be removed reliably under the new UI</li>
+                            <li>Fixed Manage Favorites wiping a watchlist when OK was clicked before its quotes finished loading</li>
+                            <li>Fixed a single unknown or delisted symbol freezing or blanking its whole market tab</li>
+                            <li>Fixed duplicated refreshes with several projects open, and closing one project stopping quotes in the others</li>
+                            <li>Fixed adding favorites before the tool window was opened, and rows occasionally duplicating when sorting during a refresh</li>
+                        </ul>
+                    </li>
+                    <li style="${Styles.LIST_ITEM}">💡 <strong>Behavior Changes</strong>
+                        <ul style="${Styles.SUB_LIST}">
+                            <li>Refresh and Stop now apply to every open Stocker window</li>
+                            <li>Add Favorites no longer suggests USDT crypto pairs, which Sina no longer quotes</li>
                         </ul>
                     </li>
                 </ul>
                 <div style="${Styles.INFO_BOX}">
-                    <p style="margin: 0; font-size: 12px;">💡 <strong>Note:</strong> Upgrade to this version if right-click delete was intermittently failing on Windows with the new UI enabled.</p>
+                    <p style="margin: 0; font-size: 12px;">💡 <strong>Note:</strong> This release requires IntelliJ IDEA 2025.3 or newer.</p>
                 </div>
                 <p style="${Styles.SMALL_TEXT}">💖 If you find this plugin helpful, please consider clicking the <strong>Donate</strong> button below to support its development. Thank you! 📈</p>
             </div>

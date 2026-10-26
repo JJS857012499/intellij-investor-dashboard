@@ -1,9 +1,9 @@
 package com.vermouthx.stocker
 
-import com.intellij.ide.plugins.PluginManagerCore
-import com.intellij.openapi.extensions.PluginId
+import com.intellij.ide.plugins.cl.PluginAwareClassLoader
 
 object StockerMeta {
     val currentVersion: String
-        get() = PluginManagerCore.getPlugin(PluginId.getId("com.vermouthx.intellij-investor-dashboard"))?.version ?: ""
+        get() = (StockerMeta::class.java.classLoader as? PluginAwareClassLoader)
+            ?.pluginDescriptor?.version ?: ""
 }

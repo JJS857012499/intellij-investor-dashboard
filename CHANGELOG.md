@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.21.2
+
+### 🐛 Bug Fixes / 错误修复
+
+- Fixed Manage Favorites wiping a watchlist when OK was clicked before its quotes finished loading / 修复“管理自选”在行情加载完成前点击确定会清空自选列表的问题
+- Fixed a single unknown or delisted symbol freezing or blanking its whole market tab and the ALL tab; the remaining symbols now keep updating / 修复单个无效或已退市代码导致所在市场标签页及“全部”标签页停止刷新或显示为空的问题，其余代码现可正常更新
+- Fixed duplicated refreshes and interference with several projects open: closing one project no longer stops quotes in the others, and Refresh / Stop now apply to every open Stocker window / 修复同时打开多个项目时重复刷新及相互干扰的问题：关闭一个项目不再导致其他项目停止更新，“刷新”与“停止”现作用于所有已打开的 Stocker 窗口
+- Fixed adding favorites, or saving changes in Manage Favorites, having no effect before the Stocker tool window had been opened / 修复在未打开 Stocker 工具窗口时添加自选或在“管理自选”中保存修改无效的问题
+- Fixed rows occasionally being duplicated when sorting during a refresh / 修复刷新过程中排序偶尔导致行重复的问题
+- Add Favorites no longer suggests USDT crypto pairs, which the Sina provider no longer quotes / “添加自选”不再推荐新浪已不再提供行情的 USDT 加密货币交易对
+
+## 1.21.1
+
+### 🐛 Bug Fixes / 错误修复
+
+- Fixed the Add Favorites add/remove button running the wrong operation when the plugin language was set to Chinese, and continuing to report success after an unsupported symbol was rejected / 修复“添加自选”对话框在中文界面下添加/删除按钮执行错误操作的问题，以及代码校验失败后按钮仍显示为已添加的问题
+- Fixed Manage Favorites silently dropping symbols whose quotes could not be fetched when clicking OK / 修复“管理自选”点击确定时会静默删除行情获取失败的自选代码的问题
+- Fixed the Manage Favorites edit form silently ignoring an invalid cost price or holdings value; both fields are now validated / 修复“管理自选”编辑表单静默忽略无效成本价或持仓输入的问题，现已加入输入校验
+- Fixed the selected row in Manage Favorites not being highlighted / 修复“管理自选”列表选中行没有高亮显示的问题
+- Fixed the Add Favorites dialog having no close button and ignoring Esc / 修复“添加自选”对话框缺少关闭按钮且无法使用 Esc 关闭的问题
+
+### 🎨 UI Improvements / 界面改进
+
+- Prices now use consistent decimals, and Change, Change%, Net Profit and Daily P/L show an explicit sign / 价格统一小数位显示，涨跌额、涨跌幅、净收益额与当日盈亏均显示正负号
+- Holdings is no longer color coded, since a share count is not a price movement / 持仓列不再使用涨跌颜色，因为持仓数量并非价格变动
+- Empty tables and dialogs now explain what to do instead of showing a blank placeholder / 表格与对话框为空时会给出操作提示，不再显示空白占位文本
+- The row context menu, sort indicators and search dialog now follow standard IDE styling, and Add Favorites gained a Market column / 行右键菜单、排序指示器与搜索对话框改用 IDE 标准样式，“添加自选”新增市场列
+
+### 🔧 Maintenance / 维护
+
+- Reduced needless table repaints on each quote refresh and removed unused code / 减少每次行情刷新时不必要的表格重绘，并移除无用代码
+
+## 1.21.0
+
+### ✨ New Features / 新功能
+
+- Added a Daily P/L column showing each holding's profit or loss for the current trading day (Change × Holdings), with sorting and color coding / 新增当日盈亏列，按“涨跌额 × 持仓”显示每只自选股当日的盈亏，并支持排序与颜色编码
+
+### 🔧 Maintenance / 维护
+
+- Raised the minimum supported IDE to IntelliJ IDEA 2025.3 and migrated the build to the unified IntelliJ IDEA distribution on JDK 21 / 将最低支持版本提升至 IntelliJ IDEA 2025.3，并迁移到统一的 IntelliJ IDEA 发行版（JDK 21）构建
+
 ## 1.20.1
 
 ### 🐛 Bug Fixes / 错误修复
