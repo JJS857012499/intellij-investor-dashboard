@@ -2,7 +2,7 @@
     <id>com.vermouthx.intellij-investor-dashboard</id>
     <name>Stocker</name>
     <vendor email="developer@nszihan.com" url="https://nszihan.com">Zihan Ma</vendor>
-    <idea-version since-build="241"/>
+    <idea-version since-build="253"/>
     <resource-bundle>messages.StockerBundle</resource-bundle>
     <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
@@ -15,9 +15,6 @@
                                  id="com.vermouthx.stocker.views.windows.StockerSettingWindow"
                                  instance="com.vermouthx.stocker.views.windows.StockerSettingWindow"/>
     </extensions>
-    <projectListeners>
-        <listener class="com.vermouthx.stocker.StockerAppManager$StockerProjectManagerListener" topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </projectListeners>
     <actions>
         <group id="com.vermouthx.stocker.actions.StockerActionGroup" text="Stocker" popup="true" icon="/icons/logo.png">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
